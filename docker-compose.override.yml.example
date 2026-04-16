@@ -1,0 +1,18 @@
+services:
+  url-shortener:
+    # 1. Override the command to enable Uvicorn's auto-reload.
+    # Because we mapped the volume './src:/app/src' in the main compose file, 
+    # Uvicorn will detect changes made on your host machine and restart automatically.
+    command: ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "80", "--reload"]
+    
+    # 2. Inject development-specific environment variables
+    environment:
+      - ENVIRONMENT=development
+      - DEBUG=True
+      # You can add any other dev-only flags here without polluting your main compose file
+
+    # 3. (Optional) If you use a debugger like debugpy in VS Code, 
+    # you can expose a secondary port here just for the debugger.
+    # ports:
+    #   - "8000:80"     # From main compose file (merged automatically)
+    #   - "5678:5678"   # Debugger port (uncomment if needed)

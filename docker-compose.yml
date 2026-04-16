@@ -1,0 +1,31 @@
+services:
+  # The FastAPI web application
+  url-shortener:
+    build:
+      context: .              # Crucial: set the context to the root directory
+      dockerfile: src/Dockerfile # The relative path to your Dockerfile
+    ports:
+      - "8000:80"              # Map host port 8000 to container port 80
+    volumes:
+      - ./src:/app/src         # Sync local src/ changes for live development
+    environment:
+      # Connect using the database service name 'db' as the hostname
+      - DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:5432/${DB_NAME}
+    depends_on:
+      - db                     # Ensure database starts before the web app
+
+  # The PostgreSQL database
+  db:
+    image: postgres:15-alpine  # A small and stable PostgreSQL image
+    container_name: url_shortener_postgres_db
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "${DB_PORT}:5432"            # Map standard port to access via local tools
+    volumes:
+      - db_data:/var/lib/postgresql/data # Named volume for data persistence
+
+volumes:
+  db_data:                     # Defines the named volume for the DB

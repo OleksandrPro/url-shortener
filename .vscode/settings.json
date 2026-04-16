@@ -1,0 +1,15 @@
+{
+    "sqltools.connections": [
+        {
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5430,
+            "driver": "PostgreSQL",
+            "name": "url_shortener_conn",
+            "database": "url_shortener_db",
+            "password": "password",
+            "username": "user"
+        }
+    ]
+}
