@@ -8,6 +8,8 @@ services:
       - "8000:80"              # Map host port 8000 to container port 80
     volumes:
       - ./src:/app/src         # Sync local src/ changes for live development
+    env_file:
+      - .env
     environment:
       # Connect using the database service name 'db' as the hostname
       - DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:5432/${DB_NAME}
@@ -24,6 +26,8 @@ services:
       POSTGRES_DB: ${DB_NAME}
     ports:
       - "${DB_PORT}:5432"            # Map standard port to access via local tools
+    env_file:
+      - .env
     volumes:
       - db_data:/var/lib/postgresql/data # Named volume for data persistence
 
