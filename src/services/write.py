@@ -1,6 +1,7 @@
 from src.models import ShortUrlCreate, URL
 from src.repositories.url import URLRepository
 from .short_url_generator import generate_short_url
+from src.exceptions.domain import UrlAlreadyExistsException
 
 class WriteService:
     def __init__(self, repo: URLRepository):
@@ -14,7 +15,7 @@ class WriteService:
             print(f"result: {entry}")
             print("----------------")
             if entry:
-                raise Exception("This short url already exists")
+                raise UrlAlreadyExistsException(f"{data.custom_short_url}")
 
             short = data.custom_short_url
         else:
