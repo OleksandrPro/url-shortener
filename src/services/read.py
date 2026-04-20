@@ -1,8 +1,16 @@
 from src.models import URL
 from src.repositories.url import URLRepository
+from src.exceptions.domain import ShortUrlNotFoundError
 
-async def get_long_url(short_url: str, repo: URLRepository):
-    results = await repo.get_url(short_url)
-    url: URL = results.first()
+class ReadServise:
+    def __init__(self, repo: URLRepository):
+        self._repo = repo
 
-    return url.long_url
+    async def get_long_url(self, short_url: str) -> str:
+        results = await self._repo.get_url(short_url)
+        url: URL = results.first()
+
+        if not url:
+            raise ShortUrlNotFoundError(short_url)
+
+        return url.long_url
