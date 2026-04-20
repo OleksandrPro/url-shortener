@@ -9,11 +9,8 @@ class WriteService:
 
     async def create_short_url(self, data: ShortUrlCreate):
         if data.custom_short_url:
-            print(data)
             result = await self._repo.get_url(short_url=data.custom_short_url)
             entry = result.first()
-            print(f"result: {entry}")
-            print("----------------")
             if entry:
                 raise UrlAlreadyExistsException(f"{data.custom_short_url}")
 
@@ -22,7 +19,6 @@ class WriteService:
             short = generate_short_url(data.long_url)
 
         final_data = URL(short_url=short, long_url=data.long_url)
-        print(f"final_data: {final_data}")
         
         return await self._repo.add_new_url(final_data)
     
