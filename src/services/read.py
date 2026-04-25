@@ -1,6 +1,7 @@
+from datetime import datetime
 from src.models import URL
 from src.repositories.url import URLRepository
-from src.exceptions.domain import ShortUrlNotFoundError
+from src.exceptions.domain import ShortUrlNotFoundError, ShortUrlExpired
 
 class ReadServise:
     def __init__(self, repo: URLRepository):
@@ -12,5 +13,8 @@ class ReadServise:
 
         if not url:
             raise ShortUrlNotFoundError(short_url)
+        
+        if url.expires_at < datetime.now():
+            raise ShortUrlExpired(short_url)
 
         return url.long_url
