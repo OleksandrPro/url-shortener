@@ -5,12 +5,15 @@ services:
     # Uvicorn will detect changes made on your host machine and restart automatically.
     command: >
       bash -c "python setup_db.py && 
+               python seed_db.py &&
                uvicorn src.main:app --host 0.0.0.0 --port 80 --reload"
     
     # 2. Inject development-specific environment variables
     environment:
       - ENVIRONMENT=development
       - DEBUG=True
+      - DB_HOST=db
+      - DB_PORT=5432
       # You can add any other dev-only flags here without polluting your main compose file
 
     # 3. (Optional) If you use a debugger like debugpy in VS Code, 

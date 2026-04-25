@@ -29,7 +29,7 @@ ENV PATH="/app/.venv/bin:$PATH"
 COPY src/ src/
 
 # NEW: Explicitly copy your setup script into the container's /app root
-COPY setup_db.py ./
+COPY setup_db.py seed_db.py ./
 
 # Expose the port the app runs on (default for FastAPI is often 8000, let's use 80)
 EXPOSE 80
