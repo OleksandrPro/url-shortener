@@ -15,4 +15,5 @@ class DB:
     ASYNC_URL = f"postgresql+asyncpg://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}"
 
 class Config:
+    HOST = os.getenv("DOMAIN")
     LINK_EXPIRATION_MINUTES = int(os.getenv("LINK_EXPIRATION_MINUTES"))

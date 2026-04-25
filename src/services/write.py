@@ -3,9 +3,11 @@ from src.repositories.url import URLRepository
 from src.services.counter import CounterService
 from .short_url_generator import generate_short_url
 from src.exceptions.domain import UrlAlreadyExistsException
+from src.utils import make_url
+from src.constants import Config
 
 class WriteService:
-    def __init__(self, url_repo: URLRepository, counter_servise = CounterService):
+    def __init__(self, url_repo: URLRepository, counter_servise = CounterService) -> str:
         self._url_repo = url_repo
         self._counter_servise = counter_servise
 
@@ -22,5 +24,9 @@ class WriteService:
 
         final_data = URL(short_url=short, long_url=data.long_url)
         
-        return await self._url_repo.add_new_url(final_data)
+        record = await self._url_repo.add_new_url(final_data)
+
+        full_link = make_url(Config.HOST, record.short_url)
+    
+        return full_link 
     
