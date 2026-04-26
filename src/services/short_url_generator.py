@@ -1,7 +1,7 @@
 from src.services.counter import CounterService
 from src.utils.encoding.base62 import encode
 
-def generate_short_url(long_url: str, c_servise: CounterService):
+def generate_short_url(c_servise: CounterService):
     new_count = c_servise.get_next_count()
 
     try:
