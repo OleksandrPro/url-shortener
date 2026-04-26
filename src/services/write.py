@@ -2,7 +2,7 @@ from src.models import ShortUrlCreate, URL
 from src.repositories.url import URLRepository
 from src.services.counter import CounterService
 from src.services.short_url_generator import generate_short_url
-from src.exceptions.domain import UrlAlreadyExistsException
+from src.exceptions.domain import UrlAlreadyExistsException, ShortUrlGenerationError
 from src.utils import make_url
 from src.constants import Config
 
@@ -13,7 +13,10 @@ class WriteService:
 
     async def create_short_url(self, data: ShortUrlCreate):
         if not data.custom_short_url:
-            short = generate_short_url(self._counter_servise)
+            try:
+                short = generate_short_url(self._counter_servise)
+            except:
+                raise ShortUrlGenerationError(data.long_url)
         else:
             result = await self._url_repo.get_url(short_url=data.custom_short_url)
             entry = result.first()
