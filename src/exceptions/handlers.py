@@ -26,6 +26,14 @@ URL_EXPIRED = """
 </html>
 """
 
+SERVER_ERROR = """
+<html>
+    <body>
+        <h1>Internal server error!</h1>
+    </body>
+</html>
+"""
+
 def register_exception_handlers(app: FastAPI):
     @app.exception_handler(UrlShortenerError)
     async def domain_exception_handler(request: Request, exc: UrlShortenerError):
@@ -50,3 +58,11 @@ def register_exception_handlers(app: FastAPI):
                 )
 
         return response
+    
+    @app.exception_handler(Exception)
+    async def unhandled_exception_handler(request: Request, exc: Exception):
+
+        return JSONResponse(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            content=SERVER_ERROR
+        )
